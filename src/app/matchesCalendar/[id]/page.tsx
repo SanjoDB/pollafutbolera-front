@@ -1,5 +1,5 @@
-
-import React from 'react';
+"use client";
+import React, { useEffect, useState } from 'react';
 import { useParams, Navigate } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import Navbar from '@/components/Navbar';
@@ -7,7 +7,7 @@ import MatchDetailHeader from '@/components/MatchDetailHeader';
 import TeamDetail from '@/components/TeamDetail';
 import MatchEvents from '@/components/MatchEvents';
 import MatchStatus from '@/components/MatchStatus';
-import { getMatchById } from '@/services/matchService';
+import { getMatchById } from '../../../services/matchService';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Card, CardContent } from '@/components/ui/card';
 

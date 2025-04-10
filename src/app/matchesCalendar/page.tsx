@@ -1,27 +1,41 @@
-
-import React from 'react';
-import { useQuery } from '@tanstack/react-query';
+"use client";
+import React, { useEffect, useState } from 'react';
 import Navbar from '@/components/Navbar';
 import MatchesList from '@/components/MatchesList';
-import { getMatches } from '@/services/matchService';
-import { Skeleton } from '@/components/ui/skeleton';
+import { getMatches } from '../../services/matchService';
+import Skeleton from 'react-loading-skeleton';
+import 'react-loading-skeleton/dist/skeleton.css';
 
 const Index = () => {
-  const { data: matches, isLoading, error } = useQuery({
-    queryKey: ['matches'],
-    queryFn: getMatches,
-  });
+  const [matches, setMatches] = useState<any[]>([]); // Ajusta el tipo si es necesario
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null); // El estado puede ser un string o null
+
+  useEffect(() => {
+    const fetchMatches = async () => {
+      try {
+        const response = await getMatches();
+        setMatches(response);
+      } catch (err) {
+        setError('An error occurred while loading matches. Please try again later.');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchMatches();
+  }, []);
 
   return (
     <div className="min-h-screen flex flex-col">
       <Navbar />
-      
+
       <main className="flex-1 container py-8 px-4 md:py-12 animate-fade-in">
         <div className="max-w-5xl mx-auto">
           <h1 className="text-3xl font-bold tracking-tight mb-2">Football Matches</h1>
           <p className="text-muted-foreground mb-8">View upcoming and past football matches from around the world</p>
-          
-          {isLoading ? (
+
+          {loading ? (
             <div className="space-y-8">
               <div>
                 <Skeleton className="h-8 w-64 mb-4" />
@@ -40,10 +54,10 @@ const Index = () => {
             </div>
           ) : error ? (
             <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg">
-              An error occurred while loading matches. Please try again later.
+              {error} {/* Muestra el mensaje de error aquí */}
             </div>
           ) : (
-            matches && <MatchesList matches={matches} />
+            <MatchesList matches={matches} /> // Usar MatchesList para mostrar los partidos
           )}
         </div>
       </main>

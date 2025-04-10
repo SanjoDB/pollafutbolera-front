@@ -1,9 +1,9 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import Link from 'next/link'; // Usar Link de Next.js
 import { format } from 'date-fns';
 import TeamFlag from './TeamFlag';
 import MatchStatus from './MatchStatus';
-import { Match } from '../types/match';
+import { Match } from '../types/match'; // Ajusta la importación según tu tipo de datos
 import { cn } from '../lib/utils';
 
 interface MatchCardProps {
@@ -17,7 +17,7 @@ const MatchCard: React.FC<MatchCardProps> = ({ match, className }) => {
   
   return (
     <Link 
-      to={`/match/${match.id}`}
+      href={`/matchesCalendar/${match.id}`} // Usamos el href adecuado para Next.js
       className={cn(
         'match-card block rounded-xl border bg-card p-4 shadow-sm hover:shadow-md transition-all',
         className

@@ -1,32 +1,29 @@
 import React from 'react';
-import { format } from 'date-fns';
-import MatchCard from './MatchCard';
-import { Match } from '../types/match';
-import { cn } from '../lib/utils';
+import { format } from 'date-fns'; // Usamos date-fns para formatear las fechas
+import MatchCard from './MatchCard'; // Importamos MatchCard para mostrar los partidos
 
 interface MatchesListProps {
-  matches: Match[];
-  className?: string;
+  matches: any[]; // Ajusta el tipo de acuerdo con los datos reales que recibes
 }
 
-const MatchesList: React.FC<MatchesListProps> = ({ matches, className }) => {
-  // Group matches by date
-  const matchesByDate: Record<string, Match[]> = matches.reduce((acc, match) => {
-    const dateKey = format(new Date(match.date), 'yyyy-MM-dd');
+const MatchesList: React.FC<MatchesListProps> = ({ matches }) => {
+  // Agrupar partidos por fecha
+  const matchesByDate: Record<string, any[]> = matches.reduce((acc, match) => {
+    const dateKey = format(new Date(match.date), 'yyyy-MM-dd'); // Agrupar por fecha
     if (!acc[dateKey]) {
       acc[dateKey] = [];
     }
     acc[dateKey].push(match);
     return acc;
-  }, {} as Record<string, Match[]>);
+  }, {} as Record<string, any[]>);
 
-  // Sort dates
+  // Ordenar fechas
   const sortedDates = Object.keys(matchesByDate).sort();
 
   return (
-    <div className={cn('space-y-8', className)}>
+    <div className="space-y-8">
       {sortedDates.map((dateKey) => (
-        <div key={dateKey} className="animate-fade-in">
+        <div key={dateKey}>
           <h2 className="text-xl font-medium mb-4">
             {format(new Date(dateKey), 'EEEE d MMMM yyyy')}
           </h2>
